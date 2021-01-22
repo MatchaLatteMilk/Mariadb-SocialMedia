@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes} = require('sequelize');
-const seql = new Sequelize('mariadb::memory:');
+const { seql } = require('../mariadb/connection');
 
 const User = seql.define('User',{
     Name:{
@@ -10,9 +10,9 @@ const User = seql.define('User',{
         type: DataTypes.STRING,
         allownull: false
     },
-    Date:{
-        type: DataTypes.DATE,
-        allownull: false
+    UUID:{
+        type: DataTypes.UUID,
+        defaultValue: seql.UUIDV4 // Or Sequelize.UUIDV1
     }
 }, {
     seql,
@@ -20,6 +20,7 @@ const User = seql.define('User',{
     tableName: 'Employees'
 });
 
-const userModel = seql.models.User;
-
-module.exports = userModel;
+module.exports = {
+    User,
+    seql
+}

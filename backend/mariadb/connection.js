@@ -26,5 +26,6 @@ async function closeCon () {
 
 module.exports = {
     connection,
-    closeCon
+    closeCon,
+    seql
 };
