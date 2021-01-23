@@ -1,54 +1,49 @@
-const {User, seql} = require('../models/user.model');
+const { User } = require('../models/user.model');
+const { seql } = require('../mariadb/connection');
+const { nameCheck,bcrypthash } = require('../util/auth')
 
 
+seql.sync();
 
-seql.sync({ force: true });
-    
-const showall = async(req,res) => {
-    console.log('/api/user/showAll')
+const SignUp = async(req,res) => {
+    console.log('/api/user/SignUp')
+    try {
+        // console.log('req.body', req.body)
+        const newUser = await User.create({
+            Name: req.body.Name,
+            Password: req.body.Password
+        });
+        console.log(newUser)
+    } catch (error) {
+        console.error(error.message)
+        res.status(400).send(error)
+    }
+}
+
+const SignIn = async(req,res) => {
+    console.log('/api/user/SignIn')
+    try {
+        
+    } catch (error) {
+        console.error(error.message)
+        res.status(400).send(error)
+    }
+}
+
+const ShowAll= async(req,res) => {
+    console.log('/api/user/showall')
     try {
         User.findAll({})
-        .then(result => {
-            res.json(result);
+        .then(result =>{
+            res.status(200).json(result)
         })
     } catch (error) {
-        console.error(error.message)
-        res.status(400).send(error)
-    }
-}
-
-const createUser = async(req,res) => {
-    console.log('/api/user/createUser')
-    try {
-        User.create({
-            name: req.body.name,
-            password: req.body.password
-        })
-    } catch (error) {
-        console.error(error.message)
-        res.status(400).send(error)
-    }
-}
-
-const deleteUser = async(req,res) => {
-    console.log('/api/user/deleteUser')
-    try {
-        User.findbyId({})
-        .then(result => {
-            if(!User){
-                return res.status(400).send({message: 'user not found.'})
-            }
-            return User.destroy().then(() => {res.status(200).send({message: 'User Deleted successfully'})})
-                                .catch(error => res.status(400).send(error))
-        })
-    } catch (error) {
-        console.error(error.message)
-        res.status(400).send(error)
+        
     }
 }
 
   module.exports = {
-      showall,
-      createUser,
-      deleteUser
+    SignUp,
+    SignIn,
+    ShowAll
   }

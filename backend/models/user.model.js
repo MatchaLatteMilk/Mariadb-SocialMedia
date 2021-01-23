@@ -3,16 +3,12 @@ const { seql } = require('../mariadb/connection');
 
 const User = seql.define('User',{
     Name:{
-        type: DataTypes.STRING,
-        allownull: false
+        type: DataTypes.TEXT,
+        allowNull: false,
     },
     Password:{
-        type: DataTypes.STRING,
-        allownull: false
-    },
-    UUID:{
-        type: DataTypes.UUID,
-        defaultValue: seql.UUIDV4 // Or Sequelize.UUIDV1
+        type: DataTypes.TEXT,
+        allowNull: false,
     }
 }, {
     seql,
@@ -20,7 +16,8 @@ const User = seql.define('User',{
     tableName: 'Employees'
 });
 
+const user_model = seql.model.User;
+
 module.exports = {
-    User,
-    seql
+    User
 }
